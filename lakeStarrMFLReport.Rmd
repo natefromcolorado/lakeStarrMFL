@@ -2,23 +2,36 @@
 title: "Proposed Minimum and Guidance Levels for Lake Starr in Polk County, Florida"
 author: "Nathan Johnson"
 date: "DRAFT, July 2015"
-output: pdf_document
+output:
+  pdf_document: 
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 8
 ---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE)
+library(ggplot2)
+```
 
 # Executive Summary
 
-This report describes the development of proposed Minimum and Guidance levels for Lake Starr in Polk County, FLoirda based on reevaltuion of levels in Southwest FLorida Water Managment DIstrict rules that became effective August 2000. Minimum levels are the levels at which further water withdrawals would be significantly harmful to the water resources of the are (Section 373.042(1)(b), F.S.). Adopted minimum levels are used to support water resource planning and permitting activities. Adopted guidance levels are used as advisory guidelines for construction of lakeshore development, water dependent structures, and operation of water managment structures.
+This report describes the development of proposed Minimum and Guidance levels for Lake Starr in Polk County, Florida based on reevaluation of levels in Southwest Florida Water Management District rules that became effective August 2000. Minimum levels are the levels at which further water withdrawals would be significantly harmful to the water resources of the are (Section 373.042(1)(b), F.S.). Adopted minimum levels are used to support water resource planning and permitting activities. Adopted guidance levels are used as advisory guidelines for construction of lake shore development, water dependent structures, and operation of water management structures.
 
-Section 373.0421(3), F.S., requres the periodic reevaluation and, as needed, the revision of established minimum flows and levels. Lake Starr was selected for reevalution based on development of modling tools for simulating lake level fluctionas that are not available when levels currently adopted for the lake were developed. THe adopted lake levels were also reevaltuated so support ongoing assessments of minimum flows and levels in teh northern Tampa Bay Water Use Caution ARea, a region of the District where recovery strategies are being implemented to support recovery to minimum flow an dlevel thresholds. 
+Section 373.0421(3), F.S., requires the periodic reevaluation and, as needed, the revision of established minimum flows and levels. Lake Starr was selected for reevaluation based on development of modeling tools for simulating lake level fluctuation that are not available when levels currently adopted for the lake were developed. The adopted lake levels were also reevaluated so support ongoing assessments of minimum flows and levels in the northern Tampa Bay Water Use Caution Area, a region of the District where recovery strategies are being implemented to support recovery to minimum flow and level thresholds. 
+
+[//]: comment
+
+
+
+```{r, fig.cap='Lake Starr Water Balance Model results'}
+setwd(file.path("L:","Hydro Eval","Staff","Nathan","R","scripts","lakeStarrMFL"))
+source("waterBalanceExploratory.R")
+lakeStarrPlot
+```
+
+\newpage
 
 ```{r}
-summary(cars)
 ```
 
-You can also embed plots, for example:
-
-```{r, echo=FALSE}
-plot(cars)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
