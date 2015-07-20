@@ -3,35 +3,97 @@ title: "Proposed Minimum and Guidance Levels for Lake Starr in Polk County, Flor
 author: "Nathan Johnson"
 date: "DRAFT, July 2015"
 output:
-  pdf_document: 
+  pdf_document:
     fig_caption: yes
-    fig_height: 6
-    fig_width: 8
+    fig_height: 4
+    fig_width: 6
 ---
 
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(echo=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, cache=TRUE)
 library(ggplot2)
+library(reshape2)
+library(pander)
+setwd(file.path("L:","Hydro Eval","Staff","Nathan","R","scripts","lakeStarrMFL"))
+source("waterBalanceExploratory.R")
 ```
 
 # Executive Summary
 
 This report describes the development of proposed Minimum and Guidance levels for Lake Starr in Polk County, Florida based on reevaluation of levels in Southwest Florida Water Management District rules that became effective August 2000. Minimum levels are the levels at which further water withdrawals would be significantly harmful to the water resources of the are (Section 373.042(1)(b), F.S.). Adopted minimum levels are used to support water resource planning and permitting activities. Adopted guidance levels are used as advisory guidelines for construction of lake shore development, water dependent structures, and operation of water management structures.
 
-Section 373.0421(3), F.S., requires the periodic reevaluation and, as needed, the revision of established minimum flows and levels. Lake Starr was selected for reevaluation based on development of modeling tools for simulating lake level fluctuation that are not available when levels currently adopted for the lake were developed. The adopted lake levels were also reevaluated so support ongoing assessments of minimum flows and levels in the northern Tampa Bay Water Use Caution Area, a region of the District where recovery strategies are being implemented to support recovery to minimum flow and level thresholds. 
+Section 373.0421(3), F.S., requires the periodic reevaluation and, as needed, the revision of established minimum flows and levels. Lake Starr was selected for reevaluation based on development of modeling tools for simulating lake level fluctuation that are not available when levels currently adopted for the lake were developed. The adopted lake levels were also reevaluated so support ongoing assessments of minimum flows and levels in the northern Tampa Bay Water Use Caution Area, a region of the District where recovery strategies are being implemented to support recovery to minimum flow and level thresholds. $latexalpha
 
-[//]: comment
+[//]:comment
+[//]:ft^3^
+[//]:ft~3~
 
+The Lake Starr water budget was built over the period 1988-2012. Lake elevation data was available over this period at a daily continuous increment. 
 
-
-```{r, fig.cap='Lake Starr Water Balance Model results'}
-setwd(file.path("L:","Hydro Eval","Staff","Nathan","R","scripts","lakeStarrMFL"))
-source("waterBalanceExploratory.R")
-lakeStarrPlot
+```{r , results = 'asis', fig.cap="Lake Starr Water Balance Model results"}
+variablePlot("levelLakeStarrOrig", "Level (ft, NGVD29)")
 ```
-
-\newpage
+\
+*Figure 1: Lake Starr Water Balance Model results*
 
 ```{r}
+my.summary <- function(x, na.rm=TRUE){
+  result <- c(Mean=mean(x, na.rm=na.rm),
+              SD=sd(x, na.rm=na.rm),
+              Median=median(x, na.rm=na.rm),
+              Min=min(x, na.rm=na.rm),
+              Max=max(x, na.rm=na.rm), 
+              N=length(x))
+}
+splitDF <- split(meltdf, f = meltdf$variable)
+summaryWB <- t(sapply(splitDF, function(x) my.summary(x$value)) )
+options(scipen=999)
+panderOptions('table.split.table', Inf)
+pander(summaryWB, caption = "Summary table of water balance variables for calibration")
 ```
 
+The Upper Floridan aquifer well near Lake Starr was filled using Romp 57 to present a more complete dataset for the water budget model.
+
+```{r plotUFA, fig.cap="Hart UFA well near Lake Starr"}
+variablePlot(c("levelUFAHartFilled","levelUFAHartFilled4Feet"), "Level (ft, NGVD29)")  # call Lake star plot
+```
+\
+*Figure 2: Hart UFA well near Lake Starr*
+
+Composite rainfall was coverted from in/day into ft3/day for the water budget model. 
+
+```{r, fig.cap="Rainfall ft3/day"}
+variablePlot("rainFinal_ftday", "Rainfall ft^3^/day") # call Lake star plot
+```
+\
+*Figure 3: Rainfall ft^3^/day*
+
+Evaporation data was collected at Lake Starr over the period 1998-2012. The GOES ET data was used in the water budget model since it was very comprable to the USGS data as well as was consistent over the period of record used by the water budget model.
+
+```{r, fig.cap="Evaporation USGS Study ft^3^/day"}
+variablePlot("evapStarrUSGS_ftday", "Evaporation ft^3^/day") # call Lake star plot
+```
+\
+*Figure 4: Evaporation ft^3^/day*
+
+Leakage from the lake was captured by a coefficient to determine the interaction between the underlying aquifer and the lake. 
+
+```{r, fig.cap="Leakage ft3/day"}
+variablePlot(c("leakage_ft3day"), "Leakage ft^3^/day")  # call Lake star plot
+```
+\
+*Figure 5: Leakage ft3/day*
+
+```{r, fig.cap="SAS flow ft3/day"}
+variablePlot(c("inflowSASSTUSE_ft3day", "inflowSASWTS1_ft3day"), 'SAS Flow ft^3/day')  # call Lake star plot
+```
+\
+*Figure 6: SAS flow ft3/day*
+
+Groundwater flow from the surface was provided by the effective
+
+```{r, fig.cap="Runoff ft3day"}
+variablePlot(c("runoffSCS_ft3day", "DCIA_ft3day"), "Runoff ft3day")  # call Lake star plot
+```
+\
+*Figure 7: SCS and DCIA runoff ft3day*
